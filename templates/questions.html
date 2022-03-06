@@ -1,0 +1,17 @@
+{% extends 'base.html'%}
+
+{% block title %}Satisfaction Survey{% endblock %}
+
+{% block content %}
+    <div class="survey">
+        <h3>{{ question }}</h3>
+
+        <form action="/answer" method="POST">
+
+        {% for choice in choices %}
+            <p><input type="radio" name="answer" value="{{ choice }}" required="true"> {{ choice }} </p>
+        {% endfor %}
+        <button class="btn">Next</button>
+        </form>
+    </div>
+{% endblock %}
