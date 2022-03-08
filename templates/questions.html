@@ -11,6 +11,9 @@
         {% for choice in choices %}
             <p><input type="radio" name="answer" value="{{ choice }}" required="true"> {{ choice }} </p>
         {% endfor %}
+        {% if allow_text %}
+            <textarea name="text"></textarea>
+        {% endif %}
         <button class="btn">Next</button>
         </form>
     </div>

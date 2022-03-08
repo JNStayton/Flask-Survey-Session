@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <form action="/survey" method="POST">
+        <label for="survey-select">Choose Your Survey to Fill Out</label>
+            <select name="surveys" id="survey-select">
+            <option value="">Please choose an option</option>
+                {% for survey in keys %}
+                <option value="{{survey}}">{{survey.capitalize()}}</option>
+                {% endfor %}
+            </select>
+        <button class="btn">Submit</button>
+    </form> 
+{% endblock %}

@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, render_template, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
-from surveys import Question, Survey, satisfaction_survey, personality_quiz, surveys
+from surveys import satisfaction_survey, personality_quiz, surveys
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secretkey'
@@ -9,13 +9,30 @@ debug = DebugToolbarExtension(app)
 
 
 @app.route('/')
+def choose_survey():
+    """Choose the survey you want to take; renders the page for that survey"""
+    keys = surveys.keys()
+    return render_template('choose.html', keys=keys)
+
+
+@app.route('/survey', methods = ['POST'])
+def load_survey():
+    survey = request.form['surveys']
+    session['survey'] = survey
+
+    return redirect('/survey')
+
+@app.route('/survey')
 def home():
     """Renders the home template, with survey name and instructions"""
-    title = satisfaction_survey.title
-    instructions = satisfaction_survey.instructions
-    return render_template('home.html', title = title, instructions = instructions)
-    
+    key = session['survey']
+    survey = surveys[key]
+    title = survey.title
+    instructions = survey.instructions
 
+    return render_template('home.html', title = title, instructions = instructions)
+
+    
 @app.route('/start_session', methods=['POST'])
 def start_session():
     """Starts the flask session to store survey responses"""
@@ -26,27 +43,38 @@ def start_session():
 @app.route('/questions/<int:idx>')
 def survey(idx):
     """Checks the number of responses stored and redirects the survey-taker to the correct question"""
+    key = session['survey']
+    survey = surveys[key]
     responses = session["responses"]
+
     if len(responses) == len(satisfaction_survey.questions):
         return redirect('/alldone')
     if len(responses) < idx or len(responses) > idx:
         flash('Invalid question ID! Please proceed in order.', 'error')
         return redirect(f'/questions/{len(responses)}')
     else: 
-        question = satisfaction_survey.questions[idx].question
-        choices = satisfaction_survey.questions[idx].choices
-        return render_template('questions.html', question=question, choices=choices)
+        question = survey.questions[idx].question
+        choices = survey.questions[idx].choices
+        allow_text =  survey.questions[idx].allow_text
+
+        return render_template('questions.html', question=question, choices=choices, allow_text=allow_text)
+
 
 @app.route('/answer', methods=['POST'])
 def handle_question():
     """Saves the responses to session; redirects user to next question OR to the completion page if finished"""
+    answer = request.form['answer']
+    text = request.form.get("text", "")
+
     responses = session["responses"]
-    responses.append(request.form['answer'])
+    responses.append({"answer": answer, "text": text})
     session["responses"] = responses
+
     if len(responses) == len(satisfaction_survey.questions):
         return redirect('/alldone')
     else:
         return redirect(f'/questions/{len(responses)}')
+
 
 @app.route('/alldone')
 def complete():
