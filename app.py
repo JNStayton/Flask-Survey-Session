@@ -78,5 +78,12 @@ def handle_question():
 
 @app.route('/alldone')
 def complete():
+    """If survey complete, renders alldone.html and displays survey questions and answers"""
+    key = session['survey']
+    survey = surveys[key]
+    questions = [survey.questions[idx].question for idx in range(len(survey.questions))]
+    answers = session['responses']
+    survey_responses = zip(questions, answers)
+    
     """Renders the page for a finished survey"""
-    return render_template('alldone.html')
+    return render_template('alldone.html', survey_responses=survey_responses)

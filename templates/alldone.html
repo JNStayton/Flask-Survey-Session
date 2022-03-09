@@ -2,10 +2,19 @@
 
 {% block headline %} <h1>Thank you!</h1> {% endblock %}
 
-{% block content %} <h3>Your responses have been recorded.</h3> 
+{% block content %} 
 
-{% for response in session['responses'] %}
-<p>{{response}}</p>
-{% endfor %}
+<h3>Your responses have been recorded.</h3>
+
+<div class="survey">
+    <h3>Your Answers:</h3>
+    {% for question, answer in survey_responses %}
+
+        <p><b>{{question}}:</b> {{answer.answer}}{% if answer.text %} - <i>{{answer.text}}</i>{%endif%}</p>
+
+    {% endfor %}
+</div>
+
+<a href="/"><button class="btn">Take Another Survey</button></a>
 
 {% endblock %}

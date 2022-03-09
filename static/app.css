@@ -3,7 +3,8 @@ body {
 }
 
 h1,
-h3 {
+h3,
+p {
 	padding: 10px;
 	margin: 10px;
 }
@@ -30,6 +31,7 @@ h3 {
 }
 
 .btn {
+	font-weight: bold;
 	border-radius: 10px;
 	padding: 10px;
 	margin: 10px;
@@ -39,4 +41,14 @@ h3 {
 .btn:hover {
 	cursor: pointer;
 	background-color: rgb(182, 226, 253);
+}
+
+#survey-select {
+	padding: 10px;
+	width: 40%;
+	border-radius: 10px;
+}
+
+#survey-select:hover {
+	cursor: pointer;
 }

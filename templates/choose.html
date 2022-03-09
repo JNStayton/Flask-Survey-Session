@@ -2,14 +2,17 @@
 
 
 {% block content %}
+
     <form action="/survey" method="POST">
-        <label for="survey-select">Choose Your Survey to Fill Out</label>
+        <div class="survey">
+        <label for="survey-select"><b>Choose Your Survey:</b></label>
             <select name="surveys" id="survey-select">
-            <option value="">Please choose an option</option>
                 {% for survey in keys %}
                 <option value="{{survey}}">{{survey.capitalize()}}</option>
                 {% endfor %}
             </select>
         <button class="btn">Submit</button>
+    </div>
     </form> 
+    
 {% endblock %}

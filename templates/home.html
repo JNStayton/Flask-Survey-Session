@@ -1,13 +1,18 @@
 {% extends 'base.html' %}
 
-{% block title %}Satisfaction Survey{% endblock %}
+{% block title %}Survey{% endblock %}
 
 {% block headline %} <h1>{{title}}</h1> {% endblock %}
 
-{% block instructions %} <h3>{{instructions}}</h3> {% endblock %}
-
 {% block content %} 
-<form action="/start_session" method="POST">
-<button class="btn">START</button>
-</form>
+
+    <div class="survey">
+        <h3>{{instructions}}</h3> 
+
+        <form action="/start_session" method="POST">
+            <button class="btn">START</button>
+        </form>
+
+    </div>
+
 {% endblock %}
